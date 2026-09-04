@@ -4102,6 +4102,9 @@ NK_API int nk_textedit_cut(struct nk_text_edit*);
 NK_API int nk_textedit_paste(struct nk_text_edit*, char const*, int len);
 NK_API void nk_textedit_undo(struct nk_text_edit*);
 NK_API void nk_textedit_redo(struct nk_text_edit*);
+NK_API void nk_edit_set_selection(struct nk_text_edit*, int start, int end);
+NK_API int nk_edit_get_selection_start(struct nk_text_edit*);
+NK_API int nk_edit_get_selection_end(struct nk_text_edit*);
 
 /* ===============================================================
  *
