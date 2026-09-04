@@ -6087,8 +6087,8 @@ nk_sin(float x)
 NK_LIB float
 nk_cos(float x)
 {
-    /* New implementation. Also generated using lolremez. */
-    /* Old version significantly deviated from expected results. */
+    // New implementation. Also generated using lolremez.
+    // Old version significantly deviated from expected results.
     NK_STORAGE const float a0 = 9.9995999154986614e-1f;
     NK_STORAGE const float a1 = 1.2548995793001028e-3f;
     NK_STORAGE const float a2 = -5.0648546280678015e-1f;
@@ -23525,7 +23525,40 @@ nk_edit_string_zero_terminated(struct nk_context *ctx, nk_flags flags,
     return result;
 }
 
+NK_API void
+nk_edit_set_selection(struct nk_text_edit *edit, int start, int end)
+{
+    if (!edit) return;
+    
+    int len = (int)nk_str_len(&edit->string);
+    
+    // 边界钳制
+    start = NK_MAX(0, NK_MIN(start, len));
+    end = NK_MAX(0, NK_MIN(end, len));
+    
+    // 保证 start <= end（Nuklear 内部用 min/max 处理，但统一方向更安全）
+    if (start > end) {
+        int tmp = start;
+        start = end;
+        end = tmp;
+    }
+    
+    edit->select_start = start;
+    edit->select_end = end;
+    edit->cursor = end;  // 光标移到选中区域末尾
+}
 
+NK_API int
+nk_edit_get_selection_start(struct nk_text_edit *edit)
+{
+    return edit ? edit->select_start : 0;
+}
+
+NK_API int
+nk_edit_get_selection_end(struct nk_text_edit *edit)
+{
+    return edit ? edit->select_end : 0;
+}
 
 
 
